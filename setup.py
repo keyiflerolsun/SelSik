@@ -30,15 +30,14 @@ setup(
     install_requires = [
         "setuptools",
         "wheel",
-        "pytz",
-        "requests",
-        "simplejson",
-        "rich",
-        "tabulate",
-        "tqdm",
-        "qrcode",
-        "pyfiglet",
-        "Pillow",
-        "notify-py"
+        "Kekik",
+        "KekikTaban",
+        "KekikSpatula",
+        "asyncio",
+        "aiohttp",
+        "selenium",
+        "webdriver_manager",
+        "selenium-stealth",
+        "parsel"
     ]
 )
