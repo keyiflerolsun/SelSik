@@ -21,7 +21,7 @@ from parsel     import Selector
 from contextlib import suppress
 
 class SelSik:
-    def __init__(self, link:str, proxi:str=None, tarayici:("kiosk", "uygulama", "gizli", None)="uygulama", kimlik:str=None):
+    def __init__(self, link:str, proxi:str=None, tarayici:("kiosk", "uygulama", "gizli", None)="uygulama", foto:bool=True, kimlik:str=None):
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
@@ -32,7 +32,8 @@ class SelSik:
             "credentials_enable_service"                      : False,
             "profile.password_manager_enabled"                : False,
         })
-        # self.options.add_argument('--blink-settings=imagesEnabled=false')  # ! Fotoğraflar Devredışı
+        if not foto:
+            self.options.add_argument('--blink-settings=imagesEnabled=false')  # ! Fotoğraflar Devredışı
         self.options.add_argument("--lang=en-US")
         self.options.add_argument("--no-first-run --no-service-autorun --password-store=basic")
         self.options.add_argument("--no-sandbox")
