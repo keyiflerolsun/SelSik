@@ -25,7 +25,7 @@ class SelSik:
         self,
         link:str,
         proxi:str     = None,
-        pencere:("kiosk", "uygulama", "gizli", None) = "uygulama",
+        pencere:("normal", "kiosk", "uygulama", "gizli") = "uygulama",
         foto:bool     = True,
         genislik:int  = 500,
         yukseklik:int = 500,
@@ -54,15 +54,17 @@ class SelSik:
         self.options.add_argument("--disable-dev-shm-usage")
         self.options.add_argument("--disable-infobars")
         self.options.add_argument("--disable-password-manager-reauthentication")
+        self.options.add_argument(f"--window-position={enlem},{boylam}")
+        self.options.add_argument(f"--window-size={genislik},{yukseklik}")
 
         match pencere:
+            case "normal":
+                self.options.headless = False
             case "uygulama":
                 self.options.add_experimental_option("mobileEmulation", {"deviceMetrics": { "width": genislik, "height": yukseklik, "pixelRatio": 3.0 }})
-                self.options.add_argument(f"--window-position={enlem},{boylam}")
-                self.options.add_argument(f"--window-size={genislik},{yukseklik}")
                 self.options.add_argument("--app=https://httpbin.org/ip")
             case "kiosk":
-                self.options.add_argument("--app=https://httpbin.org/ip")
+                self.options.add_argument("--kiosk=https://httpbin.org/ip")
             case "gizli":
                 self.options.headless = True
 
@@ -167,13 +169,19 @@ class SelSik:
 
         return pluginfile
 
-    def __tampermonkey(self) -> None:
-        self.options.add_extension("Tampermonkey.crx")
+    def __tampermonkey(self, greasyfork_link:str) -> None:
+        tampermonkey = "Tampermonkey.crx"
+
+        from os.path import isfile
+        if not isfile(tampermonkey):
+            raise FileNotFoundError(tampermonkey)
+
+        self.options.add_extension(tampermonkey)
 
         WebDriverWait(self.tarayici, 5).until(EC.number_of_windows_to_be(2))
         self.tarayici.switch_to.window(self.tarayici.window_handles[1])
 
-        self.tarayici.get('https://greasyfork.org/en/scripts/425854-hcaptcha-solver-automatically-solves-hcaptcha-in-self.tarayici')
+        self.tarayici.get(greasyfork_link)
         self.bekle_tikla('//*[@id="install-area"]/a[1]')
 
         WebDriverWait(self.tarayici, 5).until(EC.number_of_windows_to_be(3))
