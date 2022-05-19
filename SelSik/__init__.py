@@ -21,7 +21,18 @@ from parsel     import Selector
 from contextlib import suppress
 
 class SelSik:
-    def __init__(self, link:str, proxi:str=None, tarayici:("kiosk", "uygulama", "gizli", None)="uygulama", foto:bool=True, kimlik:str=None):
+    def __init__(
+        self,
+        link:str,
+        proxi:str     = None,
+        tarayici:("kiosk", "uygulama", "gizli", None) = "uygulama",
+        foto:bool     = True,
+        genislik:int  = 500,
+        yukseklik:int = 500,
+        enlem:int     = -3200,
+        boylam:int    = -3200,
+        kimlik:str    = None
+    ):
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
@@ -46,9 +57,9 @@ class SelSik:
 
         match tarayici:
             case "uygulama":
-                self.options.add_experimental_option("mobileEmulation", {"deviceMetrics": { "width": 500, "height": 500, "pixelRatio": 3.0 }})
-                self.options.add_argument("--window-position=-32000,-32000")
-                self.options.add_argument("--window-size=500,500")
+                self.options.add_experimental_option("mobileEmulation", {"deviceMetrics": { "width": genislik, "height": yukseklik, "pixelRatio": 3.0 }})
+                self.options.add_argument(f"--window-position={enlem},{boylam}")
+                self.options.add_argument(f"--window-size={genislik},{yukseklik}")
                 self.options.add_argument("--app=https://httpbin.org/ip")
             case "kiosk":
                 self.options.add_argument("--app=https://httpbin.org/ip")
@@ -222,6 +233,6 @@ class SelSik:
     	ActionChains(self.tarayici).send_keys(f'{Keys.CONTROL}v').perform()
 
     def ekran_goruntusu(self, secici:str, dosya_adi:str, by=By.XPATH) -> str:
-        dosya_adi = f"ScreenShots/{dosya_adi}"
+        # dosya_adi = f"ScreenShots/{dosya_adi}"
         self.tarayici.find_element(by, secici).screenshot(dosya_adi)
         return dosya_adi
