@@ -25,7 +25,7 @@ class SelSik:
         self,
         link:str,
         proxi:str     = None,
-        tarayici:("kiosk", "uygulama", "gizli", None) = "uygulama",
+        pencere:("kiosk", "uygulama", "gizli", None) = "uygulama",
         foto:bool     = True,
         genislik:int  = 500,
         yukseklik:int = 500,
@@ -55,7 +55,7 @@ class SelSik:
         self.options.add_argument("--disable-infobars")
         self.options.add_argument("--disable-password-manager-reauthentication")
 
-        match tarayici:
+        match pencere:
             case "uygulama":
                 self.options.add_experimental_option("mobileEmulation", {"deviceMetrics": { "width": genislik, "height": yukseklik, "pixelRatio": 3.0 }})
                 self.options.add_argument(f"--window-position={enlem},{boylam}")

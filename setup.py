@@ -10,7 +10,7 @@ setup(
     packages     = ["SelSik"],
 
     name         = "SelSik",
-    version      = "0.0.3",
+    version      = "0.0.4",
     url          = "https://github.com/keyiflerolsun/SelSik",
     description  = '@KekikAkademi Selenium Kütüphanesi',
     keywords     = ["SelSik", 'KekikAkademi', 'keyiflerolsun'],
