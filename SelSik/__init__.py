@@ -1,8 +1,23 @@
 # Bu araç @keyiflerolsun tarafından | @KekikAkademi için yazılmıştır.
 
 from os import environ
-environ["WDM_LOG_LEVEL"] = "0"
-environ["WDM_LOG"]       = "0"
+environ["WDM_LOG"] = "0"
+
+from logging import getLogger
+lg_wdm = getLogger("WDM")
+lg_wdm.setLevel(logging.NOTSET)
+lg_wdm.removeHandler(lg_wdm.handlers[0])
+
+import warnings
+warnings.filterwarnings("ignore")
+warnings.simplefilter(action="ignore")
+
+import sys, logging
+logging.disable(sys.maxsize)
+
+import platform, asyncio
+if platform.system() == 'Windows':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 from webdriver_manager.chrome          import ChromeDriverManager
 from selenium.webdriver                import Chrome
