@@ -2,6 +2,7 @@
 
 from os import environ
 environ["WDM_LOG_LEVEL"] = "0"
+environ["WDM_LOG"]       = "0"
 
 from webdriver_manager.chrome          import ChromeDriverManager
 from selenium.webdriver                import Chrome
@@ -79,7 +80,7 @@ class SelSik:
             else:
                 self.options.add_argument(f'--proxy-server={proxi}')
 
-        self.tarayici = Chrome(service=Service(ChromeDriverManager(version="101.0.4951.41").install()), options=self.options)
+        self.tarayici = Chrome(service=Service(ChromeDriverManager(version="103.0.5060.53").install()), options=self.options)
 
         stealth(
             driver       = self.tarayici,
@@ -238,7 +239,7 @@ class SelSik:
         ActionChains(self.tarayici).send_keys(Keys.RETURN).perform()
 
     def metin_yapistir(self) -> None:
-    	ActionChains(self.tarayici).send_keys(f'{Keys.CONTROL}v').perform()
+        ActionChains(self.tarayici).send_keys(f'{Keys.CONTROL}v').perform()
 
     def ekran_goruntusu(self, secici:str, dosya_adi:str, by=By.XPATH) -> str:
         # dosya_adi = f"ScreenShots/{dosya_adi}"
