@@ -120,6 +120,9 @@ class SelSik:
             with suppress(FileNotFoundError):
                 remove(eklenti)
 
+        if not proxi:
+            self.tarayici.get(link)
+
     def __proxi_eklenti(self, proxi_str:str) -> str:
         _host, _port, _user, _pass = proxi_str.split(":")
 
