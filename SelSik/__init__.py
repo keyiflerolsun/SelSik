@@ -3,10 +3,10 @@
 from os import environ
 environ["WDM_LOG"] = "0"
 
-from logging import getLogger
-lg_wdm = getLogger("WDM")
-lg_wdm.setLevel(logging.NOTSET)
-lg_wdm.removeHandler(lg_wdm.handlers[0])
+from logging import getLogger, NOTSET
+wdm_log = getLogger("WDM")
+wdm_log.setLevel(NOTSET)
+wdm_log.removeHandler(wdm_log.handlers[0])
 
 import warnings
 warnings.filterwarnings("ignore")
