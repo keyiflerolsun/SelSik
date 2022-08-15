@@ -1,23 +1,17 @@
 # Bu araç @keyiflerolsun tarafından | @KekikAkademi için yazılmıştır.
 
+from contextlib import suppress
+from Kekik.cli  import konsol
+from typing     import Literal
+
 from os import environ
 environ["WDM_LOG"] = "0"
 
 from logging import getLogger, NOTSET
 wdm_log = getLogger("WDM")
 wdm_log.setLevel(NOTSET)
-wdm_log.removeHandler(wdm_log.handlers[0])
-
-import warnings
-warnings.filterwarnings("ignore")
-warnings.simplefilter(action="ignore")
-
-import sys, logging
-logging.disable(sys.maxsize)
-
-import platform, asyncio
-if platform.system() == 'Windows':
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+with suppress(Exception):
+    wdm_log.removeHandler(wdm_log.handlers[0])
 
 from webdriver_manager.chrome          import ChromeDriverManager
 from selenium.webdriver                import Chrome
@@ -33,15 +27,15 @@ from selenium.webdriver.common.by            import By
 from selenium.webdriver.remote.webelement    import WebElement
 from selenium.webdriver.common.keys          import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from parsel     import Selector
-from contextlib import suppress
+
+from parsel import Selector
 
 class SelSik:
     def __init__(
         self,
         link:str,
         proxi:str     = None,
-        pencere:("normal", "kiosk", "uygulama", "gizli") = "uygulama",
+        pencere:Literal["normal", "kiosk", "uygulama", "gizli"] = "uygulama",
         foto:bool     = True,
         genislik:int  = 500,
         yukseklik:int = 500,
@@ -69,6 +63,7 @@ class SelSik:
         self.options.add_argument("--ignore-gpu-blocklist")
         self.options.add_argument("--disable-dev-shm-usage")
         self.options.add_argument("--disable-infobars")
+        self.options.add_argument("--disable-notifications")
         self.options.add_argument("--disable-password-manager-reauthentication")
         self.options.add_argument(f"--window-position={enlem},{boylam}")
         self.options.add_argument(f"--window-size={genislik},{yukseklik}")
@@ -113,7 +108,7 @@ class SelSik:
                 self.tarayici.get("https://httpbin.org/ip")
                 self.tarayici.get(link)
             except Exception as hata:
-                print(f"[{type(hata).__name__}] {hata}")
+                konsol.log(f"[{type(hata).__name__}] {hata}")
                 self.tarayici.close()
 
             from os import remove

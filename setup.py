@@ -1,7 +1,7 @@
 # Bu araç @keyiflerolsun tarafından | @KekikAkademi için yazılmıştır.
 
 from setuptools import setup
-from io import open
+from io         import open
 
 setup(
     author       = "keyiflerolsun",
@@ -10,7 +10,7 @@ setup(
     packages     = ["SelSik"],
 
     name         = "SelSik",
-    version      = "0.0.9",
+    version      = "0.1.0",
     url          = "https://github.com/keyiflerolsun/SelSik",
     description  = '@KekikAkademi Selenium Kütüphanesi',
     keywords     = ["SelSik", 'KekikAkademi', 'keyiflerolsun'],
