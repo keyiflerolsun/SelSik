@@ -14,12 +14,13 @@ with suppress(Exception):
     wdm_log.removeHandler(wdm_log.handlers[0])
 
 from webdriver_manager.chrome          import ChromeDriverManager
-from selenium.webdriver                import Chrome
-from selenium.webdriver                import ChromeOptions
+from selenium.webdriver                import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver                import DesiredCapabilities
 from selenium_stealth                  import stealth
 from random  import randint
 from zipfile import ZipFile
+from json    import loads
 
 from selenium.webdriver.support.ui           import WebDriverWait
 from selenium.webdriver.support              import expected_conditions as EC
@@ -37,10 +38,10 @@ class SelSik:
         proxi:str     = None,
         pencere:Literal["normal", "kiosk", "uygulama", "gizli"] = "uygulama",
         foto:bool     = True,
-        genislik:int  = 500,
-        yukseklik:int = 500,
-        enlem:int     = -3200,
-        boylam:int    = -3200,
+        genislik:int  = 750,
+        yukseklik:int = 750,
+        enlem:int     = 600,
+        boylam:int    = 0,
         kimlik:str    = None
     ):
         self.options = ChromeOptions()
@@ -80,7 +81,7 @@ class SelSik:
                 self.options.headless = True
 
         if kimlik:
-            self.options.add_argument(f'--user-agent={kimlik}')
+            self.options.add_argument(f"--user-agent={kimlik}")
 
         auth_proxy = None
         if proxi:
@@ -88,9 +89,13 @@ class SelSik:
                 eklenti = self.__proxi_eklenti(proxi)
                 self.options.add_extension(eklenti)
             else:
-                self.options.add_argument(f'--proxy-server={proxi}')
+                self.options.add_argument(f"--proxy-server={proxi}")
 
-        self.tarayici = Chrome(service=Service(ChromeDriverManager(version="103.0.5060.53").install()), options=self.options)
+
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
+
+        self.tarayici = Chrome(service=Service(ChromeDriverManager().install()), options=self.options, desired_capabilities=capabilities)
 
         stealth(
             driver       = self.tarayici,
@@ -196,11 +201,11 @@ class SelSik:
         self.tarayici.switch_to.window(self.tarayici.window_handles[1])
 
         self.tarayici.get(greasyfork_link)
-        self.bekle_tikla('//*[@id="install-area"]/a[1]')
+        self.bekle_tikla("//*[@id='install-area']/a[1]")
 
         WebDriverWait(self.tarayici, 5).until(EC.number_of_windows_to_be(3))
         self.tarayici.switch_to.window(self.tarayici.window_handles[2])
-        self.bekle_tikla('//*[@value="Kur"]')
+        self.bekle_tikla("//*[@value='Kur']")
 
         self.tarayici.switch_to.window(self.tarayici.window_handles[1])
         self.tarayici.close()
@@ -209,7 +214,7 @@ class SelSik:
 
     @property
     def _headers(self) -> dict:
-        js_headers = '''
+        js_headers = """
             const _xhr = new XMLHttpRequest();
             _xhr.open("HEAD", document.location, false);
             _xhr.send(null);
@@ -218,12 +223,15 @@ class SelSik:
                 _headers[keyValue[0].trim()] = keyValue[1].trim();
             });
             return _headers;
-        '''
+        """
         return self.tarayici.execute_script(js_headers)
 
     @property
     def _kurabiyeler(self) -> dict:
-        return {kurabiye['name']: kurabiye['value'] for kurabiye in self.tarayici.get_cookies()}
+        return {kurabiye["name"]: kurabiye["value"] for kurabiye in self.tarayici.get_cookies()}
+
+    def xhr_ver(self, arama_metni:str) -> list[dict | None]:
+        return [loads(log["message"]) for log in self.tarayici.get_log("performance") if arama_metni in log["message"]]
 
     def xpath(self, xpath:str) -> WebElement:
         return self.tarayici.find_element(By.XPATH, xpath)
@@ -240,10 +248,17 @@ class SelSik:
         except Exception:
             return None
 
-    def bekle_tikla(self, secici:str, saniye:int=10, by=By.XPATH) -> None:
+    def mause_gotur(self, secici:str, by=By.XPATH) -> None:
+        ActionChains(self.tarayici).move_to_element(self.eleman_bekle(secici, by=by)).perform()
+
+    def bekle_tikla(self, secici:str, saniye:int=10, by=By.XPATH) -> WebElement | None:
         # * self.eleman_bekle(secici, saniye, by)
         # * self.tarayici.find_element(by, secici).click()
         WebDriverWait(self.tarayici, saniye).until(EC.element_to_be_clickable((by, secici))).click()
+        try:
+            return self.tarayici.find_element(by, secici)
+        except Exception:
+            return None
 
     def metin_yaz(self, metin:str, gecikme_ms:int=250) -> None:
         for line in metin.split('\n'):
