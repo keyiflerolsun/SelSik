@@ -17,7 +17,6 @@ from webdriver_manager.chrome          import ChromeDriverManager
 from selenium.webdriver                import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver                import DesiredCapabilities
-from selenium_stealth                  import stealth
 from random  import randint
 from zipfile import ZipFile
 from json    import loads
@@ -42,7 +41,8 @@ class SelSik:
         yukseklik:int = 750,
         enlem:int     = 600,
         boylam:int    = 0,
-        kimlik:str    = None
+        kimlik:str    = None,
+        gizlilik:bool = True
     ):
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
@@ -95,18 +95,27 @@ class SelSik:
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
 
-        self.tarayici = Chrome(service=Service(ChromeDriverManager().install()), options=self.options, desired_capabilities=capabilities)
+        servis = Service(ChromeDriverManager().install())
 
-        stealth(
-            driver       = self.tarayici,
-            user_agent   = kimlik,
-            languages    = ["en-US", "en"],
-            vendor       = "Google Inc.",
-            platform     = "Win32",
-            webgl_vendor = "Intel Inc.",
-            renderer     = "Intel Iris OpenGL Engine",
-            fix_hairline = True,
-        )
+        from os import name as __sistem
+        if __sistem == "nt":
+            from subprocess import CREATE_NO_WINDOW
+            servis.creation_flags = CREATE_NO_WINDOW
+
+        self.tarayici = Chrome(service=servis, options=self.options, desired_capabilities=capabilities)
+
+        if gizlilik:
+            from selenium_stealth import stealth
+            stealth(
+                driver       = self.tarayici,
+                user_agent   = kimlik,
+                languages    = ["en-US", "en"],
+                vendor       = "Google Inc.",
+                platform     = "Win32",
+                webgl_vendor = "Intel Inc.",
+                renderer     = "Intel Iris OpenGL Engine",
+                fix_hairline = True,
+            )
 
         if auth_proxy:
             try:
