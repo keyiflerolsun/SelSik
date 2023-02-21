@@ -1,18 +1,16 @@
 # <img src="https://www.akashtrehan.com/assets/images/emoji/terminal.png" height="42" align="center"> SelSik
 
-![Repo Boyutu](https://img.shields.io/github/repo-size/keyiflerolsun/SelSik)
+![Repo Boyutu](https://img.shields.io/github/repo-size/keyiflerolsun/SelSik?logo=git&logoColor=white)
 ![Görüntülenme](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/keyiflerolsun/SelSik&title=Görüntülenme)
 <a href="https://KekikAkademi.org/Kahve" target="_blank"><img src="https://img.shields.io/badge/☕️-Kahve Ismarla-ffdd00" title="☕️ Kahve Ismarla" style="padding-left:5px;"></a>
-[![Gitpod](https://img.shields.io/badge/Gitpod-Çalıştır-blue?logo=gitpod)](https://gitpod.io/#https://github.com/keyiflerolsun/SelSik)
-[![Repl.it](https://img.shields.io/badge/Replit-Çalıştır-green?logo=replit)](https://repl.it/github/keyiflerolsun/SelSik)
 
+![Python Version](https://img.shields.io/pypi/pyversions/SelSik?logo=python&logoColor=white)
+![License](https://img.shields.io/pypi/l/SelSik?logo=gnu&logoColor=white)
+![Status](https://img.shields.io/pypi/status/SelSik?logo=windowsterminal&logoColor=white)
 
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/SelSik)
-![PyPI - Status](https://img.shields.io/pypi/status/SelSik)
-![PyPI](https://img.shields.io/pypi/v/SelSik)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/SelSik)
-![PyPI - Wheel](https://img.shields.io/pypi/wheel/SelSik)
-![PyPI - License](https://img.shields.io/pypi/l/SelSik)
+![PyPI](https://img.shields.io/pypi/v/SelSik?logo=pypi&logoColor=white)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/SelSik?logo=pypi&logoColor=white)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/SelSik?logo=pypi&logoColor=white)
 
 *İşlerimizi kolaylaştıracak fonksiyonların el altında durduğu kütüphane..*
 

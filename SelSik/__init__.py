@@ -42,7 +42,8 @@ class SelSik:
         enlem:int     = 600,
         boylam:int    = 0,
         kimlik:str    = None,
-        gizlilik:bool = True
+        gizlilik:bool = True,
+        minimize:bool = False
     ):
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
@@ -103,6 +104,8 @@ class SelSik:
             servis.creation_flags = CREATE_NO_WINDOW
 
         self.tarayici = Chrome(service=servis, options=self.options, desired_capabilities=capabilities)
+        if minimize:
+            self.tarayici.minimize_window()
 
         if gizlilik:
             from selenium_stealth import stealth
@@ -239,8 +242,18 @@ class SelSik:
     def _kurabiyeler(self) -> dict:
         return {kurabiye["name"]: kurabiye["value"] for kurabiye in self.tarayici.get_cookies()}
 
-    def xhr_ver(self, arama_metni:str) -> list[dict | None]:
-        return [loads(log["message"]) for log in self.tarayici.get_log("performance") if arama_metni in log["message"]]
+    def xhr_ver(self, arama_metni:str=None, arama_linki:str=None) -> list[dict | None]:
+        raw_logs = self.tarayici.get_log("performance")
+
+        if arama_metni:
+            return [loads(log["message"]) for log in raw_logs if arama_metni in log["message"]]
+
+        mesaj_logs = [loads(raw_log["message"])["message"] for raw_log in raw_logs]
+        json_logs  = [json_log for json_log in mesaj_logs if json_log["method"] == "Network.responseReceived" and "json" in json_log["params"]["response"]["mimeType"]]
+
+        for log in json_logs:
+            if arama_linki in log["params"]["response"]["url"]:
+                return loads(self.tarayici.execute_cdp_cmd("Network.getResponseBody", {"requestId": log["params"]["requestId"]})["body"])
 
     def xpath(self, xpath:str) -> WebElement:
         return self.tarayici.find_element(By.XPATH, xpath)
