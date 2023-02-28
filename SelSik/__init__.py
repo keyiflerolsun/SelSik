@@ -59,7 +59,7 @@ class SelSik:
         gizlilik:bool = True,
         minimize:bool = False
     ):
-        kapatirken(self.tarayici_kapa)
+        # kapatirken(self.tarayici_kapa)
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
