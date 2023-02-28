@@ -32,7 +32,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from parsel import Selector
 
 class SelSik:
-    def __tarayici_kapa(self):
+    def tarayici_kapa(self):
         self.tarayici.delete_all_cookies()
         self.tarayiyi.execute_cdp_cmd(
             "Storage.clearDataForOrigin", {
@@ -56,7 +56,7 @@ class SelSik:
         gizlilik:bool = True,
         minimize:bool = False
     ):
-        kapatirken(self.__tarayici_kapa)
+        # kapatirken(self.tarayici_kapa)
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
