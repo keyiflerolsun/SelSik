@@ -4,7 +4,7 @@ from contextlib import suppress
 from Kekik.cli  import konsol
 from typing     import Literal
 
-from os import name as __sistem
+from os import name as _sistem
 from subprocess import Popen
 
 from os import environ
@@ -47,7 +47,7 @@ class SelSik:
         with suppress(Exception):
             self.tarayici.close()
 
-        if __sistem == "nt":
+        if _sistem == "nt":
             with suppress(Exception):
                 Popen("rm -rf /tmp/.com.google.Chrome.*", shell=True)
 
@@ -118,7 +118,7 @@ class SelSik:
 
         servis = Service(ChromeDriverManager().install())
 
-        if __sistem == "nt":
+        if _sistem == "nt":
             from subprocess import CREATE_NO_WINDOW
             servis.creation_flags = CREATE_NO_WINDOW
 
