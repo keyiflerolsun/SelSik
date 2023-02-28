@@ -3,7 +3,9 @@
 from contextlib import suppress
 from Kekik.cli  import konsol
 from typing     import Literal
-from atexit     import register as kapatirken
+
+from os import name as __sistem
+from subprocess import Popen
 
 from os import environ
 environ["WDM_LOG"] = "0"
@@ -32,7 +34,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from parsel import Selector
 
 class SelSik:
-    def tarayici_kapa(self):
+    def tarayici_kapat(self):
         with suppress(Exception):
             self.tarayici.delete_all_cookies()
         with suppress(Exception):
@@ -44,6 +46,10 @@ class SelSik:
             )
         with suppress(Exception):
             self.tarayici.close()
+
+        if __sistem == "nt":
+            with suppress(Exception):
+                Popen("rm -rf /tmp/.com.google.Chrome.*", shell=True)
 
     def __init__(
         self,
@@ -59,7 +65,6 @@ class SelSik:
         gizlilik:bool = True,
         minimize:bool = False
     ):
-        # kapatirken(self.tarayici_kapa)
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
@@ -113,7 +118,6 @@ class SelSik:
 
         servis = Service(ChromeDriverManager().install())
 
-        from os import name as __sistem
         if __sistem == "nt":
             from subprocess import CREATE_NO_WINDOW
             servis.creation_flags = CREATE_NO_WINDOW

@@ -6,7 +6,7 @@ from io         import open
 setup(
     # ? Genel Bilgiler
     name         = "SelSik",
-    version      = "0.2.0",
+    version      = "0.2.1",
     url          = "https://github.com/keyiflerolsun/SelSik",
     description  = "@KekikAkademi Selenium Kütüphanesi",
     keywords     = ["SelSik", "KekikAkademi", "keyiflerolsun"],
