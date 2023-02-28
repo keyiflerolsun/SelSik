@@ -3,6 +3,7 @@
 from contextlib import suppress
 from Kekik.cli  import konsol
 from typing     import Literal
+from atexit     import register as kapatirken
 
 from os import environ
 environ["WDM_LOG"] = "0"
@@ -31,6 +32,16 @@ from selenium.webdriver.common.action_chains import ActionChains
 from parsel import Selector
 
 class SelSik:
+    def __tarayici_kapa(self):
+        self.tarayici.delete_all_cookies()
+        self.tarayiyi.execute_cdp_cmd(
+            "Storage.clearDataForOrigin", {
+                "origin"       : "*",
+                "storageTypes" : "all",
+            }
+        )
+        self.tarayici.close()
+
     def __init__(
         self,
         link:str,
@@ -45,6 +56,7 @@ class SelSik:
         gizlilik:bool = True,
         minimize:bool = False
     ):
+        kapatirken(self.__tarayici_kapa)
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
