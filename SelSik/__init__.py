@@ -33,14 +33,17 @@ from parsel import Selector
 
 class SelSik:
     def tarayici_kapa(self):
-        self.tarayici.delete_all_cookies()
-        self.tarayici.execute_cdp_cmd(
-            "Storage.clearDataForOrigin", {
-                "origin"       : "*",
-                "storageTypes" : "all",
-            }
-        )
-        self.tarayici.close()
+        with suppress(Exception):
+            self.tarayici.delete_all_cookies()
+        with suppress(Exception):
+            self.tarayici.execute_cdp_cmd(
+                "Storage.clearDataForOrigin", {
+                    "origin"       : "*",
+                    "storageTypes" : "all",
+                }
+            )
+        with suppress(Exception):
+            self.tarayici.close()
 
     def __init__(
         self,
@@ -56,7 +59,7 @@ class SelSik:
         gizlilik:bool = True,
         minimize:bool = False
     ):
-        # kapatirken(self.tarayici_kapa)
+        kapatirken(self.tarayici_kapa)
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
