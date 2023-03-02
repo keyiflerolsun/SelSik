@@ -89,6 +89,8 @@ class SelSik:
         self.options.add_argument("--disable-password-manager-reauthentication")
         self.options.add_argument(f"--window-position={enlem},{boylam}")
         self.options.add_argument(f"--window-size={genislik},{yukseklik}")
+        self.options.add_argument("--allow-insecure-localhost")
+        self.options.add_argument("--ignore-certificate-errors")
 
         match pencere:
             case "normal":
@@ -114,7 +116,8 @@ class SelSik:
 
 
         capabilities = DesiredCapabilities.CHROME
-        capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
+        capabilities["goog:loggingPrefs"]   = {"performance": "ALL"}
+        capabilities["acceptInsecureCerts"] = True
 
         servis = Service(ChromeDriverManager().install())
 
