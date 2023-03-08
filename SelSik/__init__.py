@@ -17,7 +17,7 @@ with suppress(Exception):
     wdm_log.removeHandler(wdm_log.handlers[0])
 
 from webdriver_manager.chrome          import ChromeDriverManager
-from selenium.webdriver                import Chrome, ChromeOptions
+from selenium.webdriver                import Chrome, ChromeOptions, Remote
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver                import DesiredCapabilities
 from random  import randint
@@ -47,7 +47,7 @@ class SelSik:
         with suppress(Exception):
             self.tarayici.close()
 
-        if _sistem == "nt":
+        if _sistem != "nt":
             with suppress(Exception):
                 Popen("rm -rf /tmp/.com.google.Chrome.*", shell=True)
 
@@ -63,7 +63,8 @@ class SelSik:
         boylam:int    = 0,
         kimlik:str    = None,
         gizlilik:bool = True,
-        minimize:bool = False
+        minimize:bool = False,
+        remote:str    = None
     ):
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
@@ -119,13 +120,18 @@ class SelSik:
         capabilities["goog:loggingPrefs"]   = {"performance": "ALL"}
         capabilities["acceptInsecureCerts"] = True
 
-        servis = Service(ChromeDriverManager().install())
+        if not remote:
+            servis = Service(ChromeDriverManager().install())
 
         if _sistem == "nt":
             from subprocess import CREATE_NO_WINDOW
             servis.creation_flags = CREATE_NO_WINDOW
 
-        self.tarayici = Chrome(service=servis, options=self.options, desired_capabilities=capabilities)
+        if not remote:
+            self.tarayici = Chrome(service=servis, options=self.options, desired_capabilities=capabilities)
+        else:
+            self.tarayici = Remote(command_executor=remote, options=self.options, desired_capabilities=capabilities)
+
         if minimize:
             self.tarayici.minimize_window()
 
