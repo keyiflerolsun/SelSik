@@ -135,7 +135,7 @@ class SelSik:
         if minimize:
             self.tarayici.minimize_window()
 
-        if gizlilik:
+        if gizlilik and not remote:
             from selenium_stealth import stealth
             stealth(
                 driver       = self.tarayici,
