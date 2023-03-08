@@ -35,6 +35,9 @@ from parsel import Selector
 
 class SelSik:
     def tarayici_kapat(self):
+        if self.remote:
+            return self.tarayici.quit()
+
         with suppress(Exception):
             self.tarayici.delete_all_cookies()
         with suppress(Exception):
@@ -162,6 +165,8 @@ class SelSik:
 
         if not proxi:
             self.tarayici.get(link)
+
+        self.remote = remote
 
     def __proxi_eklenti(self, proxi_str:str) -> str:
         _host, _port, _user, _pass = proxi_str.split(":")
