@@ -35,9 +35,6 @@ from parsel import Selector
 
 class SelSik:
     def tarayici_kapat(self):
-        if self.remote:
-            return self.tarayici.quit()
-
         with suppress(Exception):
             self.tarayici.delete_all_cookies()
         with suppress(Exception):
@@ -47,6 +44,10 @@ class SelSik:
                     "storageTypes" : "all",
                 }
             )
+
+        if self.remote:
+            return self.tarayici.quit()
+
         with suppress(Exception):
             self.tarayici.close()
 
