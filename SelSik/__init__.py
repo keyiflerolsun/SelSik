@@ -68,6 +68,7 @@ class SelSik:
         kimlik:str    = None,
         gizlilik:bool = True,
         minimize:bool = False,
+        chrome_v:str  = None,
         remote:str    = None
     ):
         self.options = ChromeOptions()
@@ -125,7 +126,7 @@ class SelSik:
         capabilities["acceptInsecureCerts"] = True
 
         if not remote:
-            servis = Service(ChromeDriverManager().install())
+            servis = Service(ChromeDriverManager(chrome_v).install())
 
         if _sistem == "nt":
             from subprocess import CREATE_NO_WINDOW
