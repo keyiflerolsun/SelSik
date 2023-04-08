@@ -45,12 +45,14 @@ class SelSik:
                 }
             )
 
-        if self.remote:
-            with suppress(Exception):
-                return self.tarayici.quit()
-
         with suppress(Exception):
             self.tarayici.close()
+
+        with suppress(Exception):
+            self.tarayici.execute_script("window.close();")
+
+        with suppress(Exception):
+            self.tarayici.quit()
 
         if _sistem != "nt":
             with suppress(Exception):
