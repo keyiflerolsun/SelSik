@@ -46,7 +46,8 @@ class SelSik:
             )
 
         if self.remote:
-            return self.tarayici.quit()
+            with suppress(Exception):
+                return self.tarayici.quit()
 
         with suppress(Exception):
             self.tarayici.close()
