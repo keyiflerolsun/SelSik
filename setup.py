@@ -6,7 +6,7 @@ from io         import open
 setup(
     # ? Genel Bilgiler
     name         = "SelSik",
-    version      = "0.3.0",
+    version      = "0.3.1",
     url          = "https://github.com/keyiflerolsun/SelSik",
     description  = "@KekikAkademi Selenium Kütüphanesi",
     keywords     = ["SelSik", "KekikAkademi", "keyiflerolsun"],
@@ -30,7 +30,8 @@ setup(
         "selenium",
         "webdriver_manager",
         "selenium-stealth",
-        "parsel"
+        "parsel",
+        "cssselect"
     ],
 
     # ? PyPI Bilgileri

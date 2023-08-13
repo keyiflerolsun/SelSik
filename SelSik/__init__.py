@@ -19,7 +19,6 @@ with suppress(Exception):
 from webdriver_manager.chrome          import ChromeDriverManager
 from selenium.webdriver                import Chrome, ChromeOptions, Remote
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver                import DesiredCapabilities
 from random  import randint
 from zipfile import ZipFile
 from json    import loads
@@ -124,9 +123,8 @@ class SelSik:
                 self.options.add_argument(f"--proxy-server={proxi}")
 
 
-        capabilities = DesiredCapabilities.CHROME
-        capabilities["goog:loggingPrefs"]   = {"performance": "ALL"}
-        capabilities["acceptInsecureCerts"] = True
+        self.options.set_capability("goog:loggingPrefs", {"performance": "ALL", "browser": "ALL", "network": "ALL"})
+        self.options.set_capability("acceptInsecureCerts", True)
 
         if not remote:
             servis = Service(ChromeDriverManager(chrome_v).install())
@@ -136,9 +134,9 @@ class SelSik:
             servis.creation_flags = CREATE_NO_WINDOW
 
         if not remote:
-            self.tarayici = Chrome(service=servis, options=self.options, desired_capabilities=capabilities)
+            self.tarayici = Chrome(service=servis, options=self.options)
         else:
-            self.tarayici = Remote(command_executor=remote, options=self.options, desired_capabilities=capabilities)
+            self.tarayici = Remote(command_executor=remote, options=self.options)
 
         if minimize:
             self.tarayici.minimize_window()
@@ -151,8 +149,8 @@ class SelSik:
                 languages    = ["en-US", "en"],
                 vendor       = "Google Inc.",
                 platform     = "Win32",
-                webgl_vendor = "Intel Inc.",
-                renderer     = "Intel Iris OpenGL Engine",
+                webgl_vendor = "Google Inc. (Intel)",
+                renderer     = "ANGLE (Intel, Mesa Intel(R) Xe Graphics (TGL GT2), OpenGL 4.6)",
                 fix_hairline = True,
             )
 
