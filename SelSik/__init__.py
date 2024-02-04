@@ -71,7 +71,8 @@ class SelSik:
         gizlilik:bool = True,
         minimize:bool = False,
         chrome_v:str  = None,
-        remote:str    = None
+        remote:str    = None,
+        data_dir:str  = None
     ):
         self.options = ChromeOptions()
         self.options.add_experimental_option("useAutomationExtension", False)
@@ -99,6 +100,8 @@ class SelSik:
         self.options.add_argument(f"--window-size={genislik},{yukseklik}")
         self.options.add_argument("--allow-insecure-localhost")
         self.options.add_argument("--ignore-certificate-errors")
+        if data_dir:
+            self.options.add_argument(f"--user-data-dir={data_dir}")
 
         match pencere:
             case "normal":
