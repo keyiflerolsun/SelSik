@@ -100,6 +100,7 @@ class SelSik:
         self.options.add_argument(f"--window-size={genislik},{yukseklik}")
         self.options.add_argument("--allow-insecure-localhost")
         self.options.add_argument("--ignore-certificate-errors")
+        self.options.add_argument("--remote-debugging-port=9222")
         if data_dir:
             self.options.add_argument(f"--user-data-dir={data_dir}")
 
