@@ -113,7 +113,7 @@ class SelSik:
             case "kiosk":
                 self.options.add_argument("--kiosk=https://httpbin.org/ip")
             case "gizli":
-                self.options.headless = True
+                self.options.add_argument("--headless=new")
 
         if kimlik:
             self.options.add_argument(f"--user-agent={kimlik}")
@@ -132,6 +132,7 @@ class SelSik:
 
         if not remote:
             servis = Service(ChromeDriverManager(chrome_v).install())
+            # servis = Service(executable_path="/usr/sbin/chromedriver")
 
         if _sistem == "nt":
             from subprocess import CREATE_NO_WINDOW

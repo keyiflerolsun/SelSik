@@ -6,7 +6,7 @@ from io         import open
 setup(
     # ? Genel Bilgiler
     name         = "SelSik",
-    version      = "0.3.3",
+    version      = "0.3.4",
     url          = "https://github.com/keyiflerolsun/SelSik",
     description  = "@KekikAkademi Selenium Kütüphanesi",
     keywords     = ["SelSik", "KekikAkademi", "keyiflerolsun"],
@@ -23,7 +23,7 @@ setup(
 
     # ? Paket Bilgileri
     packages         = ["SelSik"],
-    python_requires  = ">=3.10",
+    python_requires  = ">=3.11",
     install_requires = [
         "setuptools",
         "wheel",
